@@ -1,5 +1,7 @@
 # ignore all build object files
-./obj
+obj/*
 
 # ignore all build example files
-./src/example/*.exe
+src/example/*
+!src/example/Makefile
+!src/example/*.c
