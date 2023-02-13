@@ -10,7 +10,7 @@
 
 int main(int argc, char const *argv[])
 {
-    int listener = listen_net("0.0.0.0:8001");
+    int listener = listen_tcp("0.0.0.0:8001");
 
     if (listener < 0) {
         printf("SERVER ERROR: %d", listener);
@@ -22,17 +22,17 @@ int main(int argc, char const *argv[])
     char buffer[BUFF];
 
     while (1) {
-        int connect = accept_net(listener);
+        int connect = accept_tcp(listener);
 
         if (connect < 0) {
             printf("ACCEPT ERROR");
             return -2;
         }
 
-        send_net(connect, WELCOME_MESSAGE, sizeof(WELCOME_MESSAGE));
+        send_tcp(connect, WELCOME_MESSAGE, sizeof(WELCOME_MESSAGE));
 
         while (1) {
-            int length = request_net(connect, buffer, BUFF);
+            int length = request_tcp(connect, buffer, BUFF);
 
             if (length <= 0) {
                 break;
@@ -45,14 +45,14 @@ int main(int argc, char const *argv[])
             printf("Client message: %s\n", buffer);
 
             if (strcmp(buffer, EXIT) == 0) {
-                send_net(connect, EXIT, sizeof(EXIT));
+                send_tcp(connect, EXIT, sizeof(EXIT));
                 break;
             }
 
-            send_net(connect, DEFAULT_MESSAGE, sizeof(DEFAULT_MESSAGE));
+            send_tcp(connect, DEFAULT_MESSAGE, sizeof(DEFAULT_MESSAGE));
         }
 
-        close_net(connect);
+        close_tcp(connect);
     }
     
     return 0;

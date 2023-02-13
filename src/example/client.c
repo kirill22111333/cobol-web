@@ -9,7 +9,7 @@
 
 int main(int argc, char const *argv[])
 {
-    int connect = connect_net("127.0.0.1:8001");
+    int connect = connect_tcp("127.0.0.1:8001");
 
     if (connect < 0) {
         printf("CONNECT ERROR: %d", connect);
@@ -18,8 +18,8 @@ int main(int argc, char const *argv[])
 
     char buffer[BUFF];
 
-    send_net(connect, ENTRY_MESSAGE, sizeof(ENTRY_MESSAGE));
-    request_net(connect, buffer, BUFF);
+    send_tcp(connect, ENTRY_MESSAGE, sizeof(ENTRY_MESSAGE));
+    request_tcp(connect, buffer, BUFF);
 
     printf("%s\n", buffer);
 
@@ -29,8 +29,8 @@ int main(int argc, char const *argv[])
         for (unsigned i = 0; (*p++ = getchar()) != '\n' && i < BUFF; ++i);
         *(p - 1) = '\0';
 
-        send_net(connect, buffer, BUFF);
-        request_net(connect, buffer, BUFF);
+        send_tcp(connect, buffer, BUFF);
+        request_tcp(connect, buffer, BUFF);
 
         if (strcmp(buffer, EXIT) == 0) {
             break;
@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
         printf("Server message: %s\n", buffer);
     }
 
-    close_net(connect);
+    close_tcp(connect);
 
     return 0;
 }
