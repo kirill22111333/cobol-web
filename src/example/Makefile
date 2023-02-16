@@ -1,6 +1,7 @@
 CLIENT_TARGET = client
 SERVER_TARGET = server
 HASHMAP_TARGET = hashmap
+HTTP_TARGET = http
 
 CC = gcc
 CFLAGS = -Wall -std=c99 -lws2_32
@@ -13,8 +14,14 @@ HEADERS = $(SRC_LIB)tcp.h $(SRC_LIB)hashmap.h
 
 TCP_LIB = $(SRC_OBJ)tcp.o
 HASHMAP_LIB = $(SRC_OBJ)hashmap.o
+HTTP_LIB = $(SRC_OBJ)http.o
 
-default: hashmap_build client_build server_build
+LIB = $(SRC_OBJ)lib.o
+
+default: http_build hashmap_build client_build server_build
+
+http_build: $(HTTP_LIB)
+	$(CC) $(SRC_EXAMPLE)http/$(HTTP_TARGET).c $(LIB) -o $(SRC_EXAMPLE)http/$(HTTP_TARGET) $(CFLAGS)
 
 hashmap_build: $(HASHMAP_LIB)
 	$(CC) $(SRC_EXAMPLE)$(HASHMAP_TARGET).c $(HASHMAP_LIB) -o $(HASHMAP_TARGET) $(CFLAGS)
