@@ -5,3 +5,5 @@ obj/*
 src/example/*
 !src/example/Makefile
 !src/example/*.c
+
+.vscode
