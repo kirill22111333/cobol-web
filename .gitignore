@@ -2,11 +2,6 @@
 obj/
 
 # ignore all build example files
-src/example/**/*
-
-!src/example/http/
-!src/example/Makefile
-!src/example/**/*.c
-!src/example/**/*.html
+examples/**/*.exe
 
 .vscode

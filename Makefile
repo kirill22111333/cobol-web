@@ -1,35 +1,58 @@
-TARGET = Server
+TARGET = server
 CC = gcc
-LN = ld
-CFLAGS = -Wall -std=c99 -lws2_32
+COBOL = cobol
+LN = ld -m i386pe
+CFLAGS = -std=c99 -m32 -lws2_32
+COBOL_FLAGS = -lws2_32
 
-PREF_SRC = ./src/
-PREF_OBJ = ./obj/
-PREF_LIB = $(PREF_SRC)libs/
+SRC_OBJ = ./obj/
+SRC_LIB = ./lib/
+SRC_EXAMPLE = ./examples/
 
-HEADERS = $(PREF_LIB)http.h $(PREF_LIB)tcp.h $(PREF_LIB)hashmap.h
-SOURCES = $(PREF_LIB)http.c $(PREF_LIB)tcp.c $(PREF_LIB)hashmap.c
-OBJECTS = $(PREF_OBJ)http.o $(PREF_OBJ)tcp.o $(PREF_OBJ)hashmap.o
+CC_BUILD = $(CC) $(CFLAGS) -c
+COBOL_BUILD = $(COBOL) $(COBOL_FLAGS) -c
+COBOL_BUILD_EXE_FILE = $(COBOL) $(COBOL_FLAGS) -x
 
-BUILD = $(CC) $(CFLAGS) -c
+OBJECT_TCP = $(SRC_OBJ)tcp.o
+OBJECT_HTTP = $(SRC_OBJ)http.o
+OBJECT_HTTP_HANDLE = $(SRC_OBJ)handle_http.o
+OBJECT_HTTP_DEFINE = $(SRC_OBJ)define_http.o
+OBJECT_HTTP_SENDHTML = $(SRC_OBJ)sendhtml.o
+LIB = $(SRC_OBJ)lib.o
 
-HTTP_BUILD = $(PREF_LIB)http.c -o $(PREF_OBJ)http.o
-TCP_BUILD = $(PREF_LIB)tcp.c -o $(PREF_OBJ)tcp.o
-HASHMAP_BUILD = $(PREF_LIB)hashmap.c -o $(PREF_OBJ)hashmap.o
+COBOL_HTTP = $(SRC_LIB)http.cbl -o $(OBJECT_HTTP)
+COBOL_HTTP_HANDLE = $(SRC_LIB)handle_http.cbl -o $(OBJECT_HTTP_HANDLE)
+COBOL_HTTP_DEFINE = $(SRC_LIB)define_http.cbl -o $(OBJECT_HTTP_DEFINE)
+COBOL_HTTP_SENDHTML = $(SRC_LIB)sendhtml.cbl -o $(OBJECT_HTTP_SENDHTML)
+
+TCP_BUILD = $(SRC_LIB)tcp.c -o $(SRC_OBJ)tcp.o
+
+OBJECTS = $(OBJECT_TCP) $(OBJECT_HTTP) $(OBJECT_HTTP_HANDLE) $(OBJECT_HTTP_DEFINE) $(OBJECT_HTTP_SENDHTML)
+
+EXAMPLE_HTML_FILES = $(SRC_EXAMPLE)html-files/main.cbl $(SRC_OBJ)lib.o -o $(SRC_EXAMPLE)html-files/main
+EXAMPLE_TCP_CLIENT = $(SRC_EXAMPLE)tcp/client.cbl $(SRC_OBJ)lib.o -o $(SRC_EXAMPLE)tcp/client
+EXAMPLE_TCP_SERVER = $(SRC_EXAMPLE)tcp/server.cbl $(SRC_OBJ)lib.o -o $(SRC_EXAMPLE)tcp/server
 
 default: init build link
 
 init: 
 	IF NOT EXIST ./obj (mkdir obj)
 
-build: $(HEADERS) $(SOURCES)
-	$(BUILD) $(HTTP_BUILD)
-	$(BUILD) $(TCP_BUILD)
-	$(BUILD) $(HASHMAP_BUILD)
+build:
+	$(CC_BUILD) $(TCP_BUILD)
+	$(COBOL_BUILD) $(COBOL_HTTP)
+	$(COBOL_BUILD) $(COBOL_HTTP_HANDLE)
+	$(COBOL_BUILD) $(COBOL_HTTP_DEFINE)
+	$(COBOL_BUILD) $(COBOL_HTTP_SENDHTML)
 
-link: $(OBJECTS)
-	$(LN) -r $(OBJECTS) -o $(PREF_OBJ)lib.o
+link:
+	$(LN) -r $(OBJECTS) -o $(LIB)
+
+example:
+	$(COBOL_BUILD_EXE_FILE) $(EXAMPLE_HTML_FILES)
+	$(COBOL_BUILD_EXE_FILE) $(EXAMPLE_TCP_CLIENT)
+	$(COBOL_BUILD_EXE_FILE) $(EXAMPLE_TCP_SERVER)
 
 clean:
-	rm -r $(PREF_OBJ)*.o
+	rm -r $(SRC_OBJ)*.o
 	rm -r $(TARGET).exe
