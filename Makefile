@@ -21,6 +21,7 @@ OBJECTS = $(wildcard $(SRC_OBJ)*.o)
 LIB = $(SRC_OBJ)lib.o
 
 EXAMPLES=
+EXAMPLES += send-text/main
 EXAMPLES += html-files/main
 EXAMPLES += tcp/client
 EXAMPLES += tcp/server
