@@ -17,6 +17,8 @@
           05 host-address pic x(50).
           05 host-path    pic x(2048).
           05 host-handle  usage procedure-pointer.
+
+       77 handle-func-type pic x(16).
        
        procedure division.
 
@@ -32,7 +34,8 @@
            call "handle_http"
            using by reference http-tbl,
                  by content host-path,
-                 by content host-handle.
+                 by content host-handle,
+                 by content handle-func-type.
 
            set host-path to "/about".
            set host-handle to entry "http-about".
@@ -40,7 +43,8 @@
            call "handle_http"
            using by reference http-tbl,
                  by content host-path,
-                 by content host-handle.
+                 by content host-handle,
+                 by content handle-func-type.
 
            call "listen_http" 
            using by reference http-tbl.

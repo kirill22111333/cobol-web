@@ -14,10 +14,17 @@
 
        77 path          pic x(2048).
        77 func-handle   usage procedure-pointer.
+       77 func-type     pic x(16).
       
-       procedure division using http-tbl, path, func-handle.
+       procedure division using http-tbl, path, func-handle, func-type.
+
+           evaluate func-type
+               when "404"
+                   set tab-path(http-len) to "##404"
+               when other
+                   set tab-path(http-len) to path
+           end-evaluate
         
-           set tab-path(http-len) to path.
            set func(http-len) to func-handle.
 
            add 1 to http-len.

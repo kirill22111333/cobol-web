@@ -28,8 +28,8 @@
            using by reference http-tbl, 
                  by content host-address.
 
-           set host-path to "/".
-           set host-handle to entry "http-index".
+           set handle-func-type to "404".
+           set host-handle to entry "http-404".
 
            call "handle_http"
            using by reference http-tbl,
@@ -37,6 +37,7 @@
                  by content host-handle,
                  by content handle-func-type.
 
+           set handle-func-type to spaces.
 
            call "listen_http" 
            using by reference http-tbl.
@@ -44,23 +45,17 @@
            goback.
        
        end program http.
+      
+      **********************
+      * 404 PAGE
+      **********************
        
-      **********************
-      * INDEX PAGE
-      **********************
-
        identification division.
-       program-id. http-index.
+       program-id. http-404.
        
-       environment division.
-       configuration section.
-
        data division.
-
        working-storage section.
-       01 string-for-send.
-           05 string-data pic x(1024).
-           05 string-size pic 9(4).
+       77 file-name pic x(512).
 
        linkage section.
        01 request.
@@ -69,22 +64,22 @@
              10 request-path   pic x(2048).
              10 request-proto  pic x(16).
           05 request-headers occurs 256 times.
-             10 request-header       pic x(2048).
+             10 request-header    pic x(2048).
           05 request-header-size  pic 9(3).
              
-       77 connect pic 9(5).
+       77 connect pic s9(5).
        
        procedure division using request, connect.
 
-           set string-data to "test string".
-           set string-size to 
-               function length(function trim(string-data)).
-      
-           call "sendtext_http"
+           display "404-page".
+        
+           set file-name to "./layouts/404.html".
+
+           call "sendhtml_http"
            using by content connect,
-           by content string-data
-           by content string-size.
-                 
+           by content file-name.
+
            exit program.
        
-       end program http-index.
+       end program http-404.
+       

@@ -27,6 +27,7 @@
        77 start-str    pic 9(6).
        77 str-pointer  pic 9(6).
        77 max-size-str pic 9(6).
+       77 tmp-path     pic x(2048).
 
        linkage section.
        01 http-tbl.
@@ -169,7 +170,22 @@
                exit paragraph.
            
            switch-http.
-               perform get-func
+               call "get-func"
+               using by content http-tbl,
+               by content request-path,
+               by reference status-func,
+               by reference idx-func.
+
+               if status-func is equal 0 then
+                   set tmp-path to "##404"
+
+                   call "get-func"
+                   using by content http-tbl,
+                   by content tmp-path,
+                   by reference status-func,
+                   by reference idx-func
+                   end-call
+               end-if.
 
                if status-func is equal 0 then
                    perform page404-http
@@ -196,19 +212,6 @@
                using by value connect,
                by content function trim(buffer-data),
                by value buffer-size.
-
-               exit paragraph.
-
-           get-func.
-               set status-func to 0.
-
-               perform varying idx-func from 1 
-               until idx-func is greater than http-len
-                   if tab-path(idx-func) is equal request-path then
-                       set status-func to 1
-                       exit paragraph
-                   end-if
-               end-perform.
 
                exit paragraph.
        

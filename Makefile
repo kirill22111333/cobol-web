@@ -25,6 +25,7 @@ EXAMPLES += send-text/main
 EXAMPLES += html-files/main
 EXAMPLES += tcp/client
 EXAMPLES += tcp/server
+EXAMPLES += 404-page/main
 
 default: build link
 
