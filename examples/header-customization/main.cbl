@@ -11,7 +11,8 @@
              10 http-func occurs 256 times.
                 15 func usage procedure-pointer.
              10 http-tab  occurs 256 times.
-                15 tab-path  pic x(2048).
+                15 tab-path   pic x(2048).
+                15 tab-method pic x(16).
 
        01 host-data.
           05 host-address pic x(50).
@@ -19,6 +20,7 @@
           05 host-handle  usage procedure-pointer.
 
        77 handle-func-type pic x(16).
+       77 path-method      pic x(16).
        
        procedure division.
 
@@ -34,6 +36,7 @@
            call "handle_http"
            using by reference http-tbl,
                  by content host-path,
+                 by content path-method,
                  by content host-handle,
                  by content handle-func-type.
 
@@ -100,7 +103,7 @@
            call "sendtext_http"
            using by content response-data,
            by content connect,
-           by content string-data
+           by content string-data,
            by content string-size.
                  
            exit program.

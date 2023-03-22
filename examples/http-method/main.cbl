@@ -33,6 +33,8 @@
            set host-path to "/".
            set host-handle to entry "http-index".
 
+           set path-method to "GET".
+
            call "handle_http"
            using by reference http-tbl,
                  by content host-path,
@@ -40,6 +42,33 @@
                  by content host-handle,
                  by content handle-func-type.
 
+           set path-method to "POST".
+
+           call "handle_http"
+           using by reference http-tbl,
+                 by content host-path,
+                 by content path-method,
+                 by content host-handle,
+                 by content handle-func-type.
+
+           set path-method to "PUT".
+
+           call "handle_http"
+           using by reference http-tbl,
+                 by content host-path,
+                 by content path-method,
+                 by content host-handle,
+                 by content handle-func-type.
+
+           set path-method to "DELETE".
+
+           call "handle_http"
+           using by reference http-tbl,
+                 by content host-path,
+                 by content path-method,
+                 by content host-handle,
+                 by content handle-func-type.
+      
            call "listen_http" 
            using by reference http-tbl.
 
@@ -79,16 +108,25 @@
              10 request-path   pic x(2048).
              10 request-proto  pic x(16).
           05 request-headers occurs 256 times.
-             10 request-header       pic x(2048).
+             10 request-header     pic x(2048).
           05 request-header-size  pic 9(3).
              
        77 connect pic 9(5).
        
        procedure division using request, connect.
 
-           set string-data to "test string".
-           set string-size to 
-               function length(function trim(string-data)).
+           set string-data to spaces.
+           set string-size to 1.
+
+           string
+               "HI! This is the" 
+               X"20"
+               function trim(request-method)
+               X"20"
+               "method."
+               into string-data
+               with pointer string-size
+           end-string.
       
            call "sendtext_http"
            using by content response-data,

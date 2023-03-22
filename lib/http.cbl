@@ -19,6 +19,10 @@
            05 request-headers occurs 256 times.
                10 request-header       pic x(2048).
            05 request-headers-size  pic 9(3).
+       01 temp.
+           05 temp-path    pic x(2048).
+           05 temp-method  pic x(16).
+       
        77 i            pic 9.
        77 j            pic 9.
        77 k            pic 9.
@@ -27,7 +31,6 @@
        77 start-str    pic 9(6).
        77 str-pointer  pic 9(6).
        77 max-size-str pic 9(6).
-       77 tmp-path     pic x(2048).
 
        linkage section.
        01 http-tbl.
@@ -37,7 +40,8 @@
            05 http-func occurs 256 times.
               10 func usage procedure-pointer.
            05 http-tab  occurs 256 times.
-              10 tab-path pic x(2048).
+              10 tab-path   pic x(2048).
+              10 tab-method pic x(16).
 
        77 status-code pic 9.
        
@@ -173,15 +177,18 @@
                call "get-func"
                using by content http-tbl,
                by content request-path,
+               by content request-method,
                by reference status-func,
                by reference idx-func.
 
                if status-func is equal 0 then
-                   set tmp-path to "##404"
+                   set temp-path to "##404"
+                   set temp-method to spaces
 
                    call "get-func"
                    using by content http-tbl,
-                   by content tmp-path,
+                   by content temp-path,
+                   by content temp-method,
                    by reference status-func,
                    by reference idx-func
                    end-call
