@@ -28,8 +28,8 @@
            using by reference http-tbl, 
                  by content host-address.
 
-           set handle-func-type to "404".
-           set host-handle to entry "http-404".
+           set host-path to "/".
+           set host-handle to entry "http-index".
 
            call "handle_http"
            using by reference http-tbl,
@@ -37,23 +37,25 @@
                  by content host-handle,
                  by content handle-func-type.
 
-           set handle-func-type to spaces.
-
            call "listen_http" 
            using by reference http-tbl.
 
            goback.
        
        end program http.
-      
-      **********************
-      * 404 PAGE
-      **********************
        
+      **********************
+      * INDEX PAGE
+      **********************
+
        identification division.
-       program-id. http-404.
+       program-id. http-index.
        
+       environment division.
+       configuration section.
+
        data division.
+
        working-storage section.
        01 response-data.
            05 http-version pic x(10).
@@ -63,7 +65,9 @@
                10 header-data pic x(256).
            05 response-headers-size pic 9(3).
 
-       77 file-name pic x(512).
+       01 string-for-send.
+           05 string-data pic x(1024).
+           05 string-size pic 9(4).
 
        linkage section.
        01 request.
@@ -72,26 +76,33 @@
              10 request-path   pic x(2048).
              10 request-proto  pic x(16).
           05 request-headers occurs 256 times.
-             10 request-header    pic x(2048).
+             10 request-header       pic x(2048).
           05 request-header-size  pic 9(3).
              
-       77 connect pic s9(5).
+       77 connect pic 9(5).
        
        procedure division using request, connect.
 
-           display "404-page".
-        
-           set file-name to "./layouts/404.html".
+           set string-data to "header customization".
+           set string-size to 
+               function length(function trim(string-data)).
 
-           set status-code to 404.
-           set status-text to "Not Found".
+           set http-version to "HTTP/1.1".
+           set status-code to 200.
+           set status-text to "OK".
 
-           call "sendhtml_http"
+           set response-headers(1) to "Content-type: text/html".
+           set response-headers(2) to "Server: WEB COBOL".
+           set response-headers(3) to "Content-language: en".
+
+           set response-headers-size to 3.
+      
+           call "sendtext_http"
            using by content response-data,
            by content connect,
-           by content file-name.
-
+           by content string-data
+           by content string-size.
+                 
            exit program.
        
-       end program http-404.
-       
+       end program http-index.

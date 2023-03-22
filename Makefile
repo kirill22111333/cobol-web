@@ -26,6 +26,7 @@ EXAMPLES += html-files/main
 EXAMPLES += tcp/client
 EXAMPLES += tcp/server
 EXAMPLES += 404-page/main
+EXAMPLES += header-customization/main
 
 default: build link
 

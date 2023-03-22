@@ -65,6 +65,14 @@
 
        data division.
        working-storage section.
+       01 response-data.
+           05 http-version pic x(10).
+           05 status-code  pic 9(3).
+           05 status-text  pic x(50).
+           05 response-headers occurs 8 times.
+               10 header-data pic x(256).
+           05 response-headers-size pic 9(3).
+       
        77 file-name pic x(512).
        77 i pic 9(3).
 
@@ -99,7 +107,8 @@
            set file-name to "./layouts/index.html".
 
            call "sendhtml_http"
-           using by content connect,
+           using by content response-data,
+           by content connect,
            by content file-name.
                  
            exit program.
@@ -118,6 +127,14 @@
 
        data division.
        working-storage section.
+       01 response-data.
+           05 http-version pic x(10).
+           05 status-code  pic 9(3).
+           05 status-text  pic x(50).
+           05 response-headers occurs 8 times.
+               10 header-data pic x(256).
+           05 response-headers-size pic 9(3).
+
        77 file-name pic x(512).
        77 i pic 9(3).
 
@@ -152,7 +169,8 @@
            set file-name to "./layouts/about.html".
 
            call "sendhtml_http"
-           using by content connect,
+           using by content response-data,
+           by content connect,
            by content file-name.
                  
            exit program.

@@ -37,7 +37,6 @@
                  by content host-handle,
                  by content handle-func-type.
 
-
            call "listen_http" 
            using by reference http-tbl.
 
@@ -58,6 +57,14 @@
        data division.
 
        working-storage section.
+       01 response-data.
+           05 http-version pic x(10).
+           05 status-code  pic 9(3).
+           05 status-text  pic x(50).
+           05 response-headers occurs 8 times.
+               10 header-data pic x(256).
+           05 response-headers-size pic 9(3).
+
        01 string-for-send.
            05 string-data pic x(1024).
            05 string-size pic 9(4).
@@ -81,7 +88,8 @@
                function length(function trim(string-data)).
       
            call "sendtext_http"
-           using by content connect,
+           using by content response-data,
+           by content connect,
            by content string-data
            by content string-size.
                  
