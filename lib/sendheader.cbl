@@ -65,6 +65,9 @@
 
       *    SEND HEADERS
 
+           set buffer-data to spaces.
+           set buffer-size to 1.
+
            if response-headers-size is equal 0 then
                set response-headers(1) to "Content-type: text/html"
            end-if.
