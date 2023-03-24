@@ -13,6 +13,7 @@
              10 http-tab  occurs 256 times.
                 15 tab-path   pic x(2048).
                 15 tab-method pic x(16).
+             10 http-public pic x(256).
 
        01 host-data.
           05 host-address pic x(50).

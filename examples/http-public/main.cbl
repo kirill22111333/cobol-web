@@ -31,6 +31,8 @@
            using by reference http-tbl, 
                  by content host-address.
 
+           set http-public to "./public".
+
            set host-path to "/".
            set host-handle to entry "http-index".
 
@@ -59,7 +61,6 @@
        configuration section.
 
        data division.
-
        working-storage section.
        01 response-data.
            05 http-version pic x(10).
@@ -68,10 +69,9 @@
            05 response-headers occurs 8 times.
                10 header-data pic x(256).
            05 response-headers-size pic 9(3).
-
-       01 string-for-send.
-           05 string-data pic x(1024).
-           05 string-size pic 9(4).
+       
+       77 file-name pic x(512).
+       77 i pic 9(3).
 
        linkage section.
        01 request.
@@ -83,19 +83,16 @@
              10 request-header       pic x(2048).
           05 request-header-size  pic 9(3).
              
-       77 connect pic 9(5).
+       77 connect pic s9(5).
        
        procedure division using request, connect.
 
-           set string-data to "test string".
-           set string-size to 
-               function length(function trim(string-data)).
-      
-           call "sendtext_http"
+           set file-name to "./layouts/index.html".
+
+           call "sendhtml_http"
            using by content response-data,
            by content connect,
-           by content string-data,
-           by content string-size.
+           by content file-name.
                  
            exit program.
        

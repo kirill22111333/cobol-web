@@ -42,6 +42,7 @@
            05 http-tab  occurs 256 times.
               10 tab-path   pic x(2048).
               10 tab-method pic x(16).
+           05 http-public pic x(256).
 
        77 status-code pic 9.
        
@@ -182,6 +183,20 @@
                by reference idx-func.
 
                if status-func is equal 0 then
+                   if http-public is not equal spaces then
+                       call "public_directory" 
+                       using by content http-public,
+                       by content request-path,
+                       by reference status-func,
+                       by content connect
+                       end-call
+                   
+                       if status-func is equal 1 then
+                           exit paragraph
+                       end-if
+                   
+                   end-if
+
                    set temp-path to "##404"
                    set temp-method to spaces
 
