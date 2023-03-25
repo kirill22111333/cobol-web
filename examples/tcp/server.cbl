@@ -7,7 +7,8 @@
            05  listener        pic S9(3).
            05  connect         pic S9(3).
            05  buffer          pic X(512).
-           05  buffer-size     pic 9(3) value 512.
+           05  buffer-size     pic s9(3).
+           05  buffer-size-st  pic 9(3).
            05  request-length  pic s9(3).
            
        77  server-address  pic X(21).
@@ -22,6 +23,8 @@
        procedure division.
            
            start-server.
+               set buffer-size-st to 512.
+
                perform run-listener.
                perform server-listener.
                stop run.
@@ -50,10 +53,17 @@
                    stop run
                end-if.
 
-               string welcome-message delimited by size into buffer. 
+               set buffer to spaces.
+               set buffer-size to 1.
+
+               string 
+                   function trim(welcome-message)
+                   into buffer
+                   with pointer buffer-size
+               end-string.
 
                call "send_tcp" using by value connect,
-                   by content function trim(welcome-message), 
+                   by content function trim(buffer), 
                    by value buffer-size.
 
                perform process-request.
@@ -65,8 +75,10 @@
                exit paragraph.
 
            process-request.
+               set buffer to spaces.
+
                call "request_tcp" using by value connect, 
-                   by reference buffer, by value buffer-size 
+                   by reference buffer, by value buffer-size-st 
                    returning request-length.
 
                if request-length is less than 0 then
@@ -80,8 +92,17 @@
                    if buffer(1:request-length) is equal exit-message
                        perform send-exit-message
                    else
+                       set buffer to spaces
+                       set buffer-size to 1
+
+                       string 
+                           function trim(default-message)
+                           into buffer
+                           with pointer buffer-size
+                       end-string
+
                        call "send_tcp" using by value connect,
-                           by content function trim(default-message), 
+                           by content function trim(buffer), 
                            by value buffer-size
 
                        perform process-request
@@ -95,8 +116,17 @@
                exit paragraph.
 
            send-exit-message.
+               set buffer to spaces.
+               set buffer-size to 1.
+
+               string 
+                   function trim(exit-message)
+                   into buffer
+                   with pointer buffer-size
+               end-string.
+               
                call "send_tcp" using by value connect,
-                   by content function trim(exit-message), 
+                   by content function trim(buffer), 
                    by value buffer-size.
 
                display end-message.

@@ -6,7 +6,8 @@
        01  server.
            05  connect         pic S9(3).
            05  buffer          pic X(512).
-           05  buffer-size     pic 9(3) value 512.
+           05  buffer-size     pic s9(3).
+           05  buffer-size-st  pic 9(3).
            05  request-length  pic S9(3).
            05  input-value     pic X(512).
            
@@ -18,6 +19,8 @@
        procedure division.
            
            start-client.
+               set buffer-size-st to 512.
+
                perform connect-server.
                perform working-client.
                stop run.
@@ -36,12 +39,23 @@
                exit paragraph.
 
            working-client.
+               set buffer to spaces.
+               set buffer-size to 1.
+
+               string
+                   function trim(entry-message)
+                   into buffer
+                   with pointer buffer-size
+               end-string.
+
                call "send_tcp" using by value connect,
-                   by content entry-message,
+                   by content function trim(buffer),
                    by value buffer-size.
 
+               set buffer to spaces.
+
                call "request_tcp" using by value connect,
-                   by reference buffer, by value buffer-size
+                   by reference buffer, by value buffer-size-st
                    returning request-length.
 
                display "SERVER MESSAGE: "buffer(1:request-length).
@@ -54,9 +68,18 @@
 
            send-data.
                accept input-value from console.
+
+               set buffer to spaces.
+               set buffer-size to 1.
+               
+               string
+                   function trim(input-value)
+                   into buffer
+                   with pointer buffer-size
+               end-string.
                
                call "send_tcp" using by value connect,
-                   by content function trim(input-value),
+                   by content function trim(buffer),
                    by value buffer-size.
 
                if input-value is equal exit-message 
@@ -64,8 +87,10 @@
                    exit paragraph
                end-if.
 
+               set buffer to spaces.
+
                call "request_tcp" using by value connect,
-                   by reference buffer, by value buffer-size
+                   by reference buffer, by value buffer-size-st
                    returning request-length.
 
                if buffer(1:request-length) is equal exit-message then
