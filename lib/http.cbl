@@ -83,9 +83,11 @@
 
                set j to 0.
 
-               perform http-request until j is equal 1.
+               perform http-request until j is greater than 0.
 
-               perform switch-http.
+               if j is equal 1 then
+                   perform switch-http
+               end-if.
 
                call "close_tcp"
                using by value connect.
@@ -102,8 +104,8 @@
                by value param-size-val,
                returning buffer-size.
 
-               if buffer-size is less than 0 then
-                   set j to 1
+               if buffer-size is less than or equal to 0 then
+                   set j to 2
                    exit paragraph
                end-if.
 

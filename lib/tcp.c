@@ -22,17 +22,7 @@ typedef enum error_t {
     CONNECTED_ERROR     = -7,
 } error_t;
 
-/*
-    return: listener server
-*/
 extern int listen_tcp(char *address) {
-
-    /*
-        https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsastartup
-
-        The function required to initialize sockets in Windows.
-    */
-
     #ifdef __WIN32
         WSADATA wsa;
         if (WSAStartup(MAKEWORD(2,2), &wsa) != 0) {
@@ -91,12 +81,6 @@ extern int accept_tcp(int listener) {
 }
 
 extern int connect_tcp(char *address) {
-    /*
-        https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsastartup
-
-        The function required to initialize sockets in Windows.
-    */
-
     #ifdef __WIN32
         WSADATA wsa;
         if (WSAStartup(MAKEWORD(2,2), &wsa) != 0) {
@@ -143,23 +127,11 @@ extern int close_tcp(int connect) {
 }
 
 extern int send_tcp(int connect, char *buffer, size_t size) {
-    size_t i = 0;
-    for (; buffer[i] != '\0'; i++);
-
     return send(connect, buffer, (int) size, 0);
 }
 
 extern int request_tcp(int connect, char *buffer, size_t size) {
-    int rv = recv(connect, buffer, (int) size, 0);
-
-    if (rv < 0) {
-        return rv;
-    }
-
-    size_t i = 0;
-    for (; buffer[i] != '\0'; i++);
-
-    return i;
+    return recv(connect, buffer, (int) size, 0);
 }
 
 static int parse_address(char *address, char *ipv4, char *port) {
