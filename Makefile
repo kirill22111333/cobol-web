@@ -29,6 +29,7 @@ EXAMPLES += 404-page/main
 EXAMPLES += header-customization/main
 EXAMPLES += http-method/main
 EXAMPLES += http-public/main
+EXAMPLES += cookie/main
 
 default: build link
 
