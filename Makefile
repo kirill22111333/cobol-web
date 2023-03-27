@@ -31,6 +31,7 @@ EXAMPLES += http-method/main
 EXAMPLES += http-public/main
 EXAMPLES += cookie/main
 EXAMPLES += cookie-sessions/main
+EXAMPLES += downloads/main
 
 default: build link
 
