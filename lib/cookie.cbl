@@ -45,20 +45,33 @@
                set cookie-path to "/"
            end-if.
 
-           string
-               function trim(cookie-name)
-               X"3D"
-               function trim(cookie-value)
-               X"3B" X"20"
-               "expires"
-               X"3D"
-               function trim(cookie-expires)
-               X"3B" X"20"
-               "path"
-               X"3D"
-               function trim(cookie-path)
-               into header-value
-           end-string.
+           if cookie-expires is equal "SESSION" then
+               string
+                   function trim(cookie-name)
+                   X"3D"
+                   function trim(cookie-value)
+                   X"3B" X"20"
+                   "path"
+                   X"3D"
+                   function trim(cookie-path)
+                   into header-value
+               end-string
+           else
+               string
+                   function trim(cookie-name)
+                   X"3D"
+                   function trim(cookie-value)
+                   X"3B" X"20"
+                   "expires"
+                   X"3D"
+                   function trim(cookie-expires)
+                   X"3B" X"20"
+                   "path"
+                   X"3D"
+                   function trim(cookie-path)
+                   into header-value
+               end-string
+           end-if.
 
            set header-title to "Set-Cookie".
 

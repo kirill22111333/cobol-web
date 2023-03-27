@@ -30,6 +30,7 @@ EXAMPLES += header-customization/main
 EXAMPLES += http-method/main
 EXAMPLES += http-public/main
 EXAMPLES += cookie/main
+EXAMPLES += cookie-sessions/main
 
 default: build link
 
