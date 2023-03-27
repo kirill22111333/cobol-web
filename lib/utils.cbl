@@ -5,6 +5,10 @@
        configuration section.
        
        data division.
+
+       working-storage section.
+       77 parse-path pic x(2048).
+
        linkage section.
        01 http-tbl.
            05 http-host pic x(50).
@@ -24,11 +28,16 @@
        procedure division using http-tbl, request-path, request-method, 
                            status-func, idx-func.
         
+           unstring
+               request-path delimited by "?"
+               into parse-path
+           end-unstring.
+
            set status-func to 0.
 
            perform varying idx-func from 1 
            until idx-func is greater than http-len
-               if tab-path(idx-func) is equal request-path 
+               if tab-path(idx-func) is equal parse-path 
                and tab-method(idx-func) is equal request-method then
                    set status-func to 1
                    exit program
@@ -144,3 +153,76 @@
            exit program.
        
        end program date-utc.
+
+      ********************************
+
+       identification division.
+       program-id. parse-path.
+      
+       data division.
+       
+       working-storage section.
+       77 i pic 9(4).
+       77 j pic 9(3).
+       77 ct pic 9.
+       77 request-path-size pic 9(4).
+
+       linkage section.
+       01 parse-path.
+           05 parse-get occurs 256 times.
+               10 get-name     pic x(32).
+               10 get-value    pic x(256).
+           05 parse-get-size pic 9(3).
+
+       77 request-path pic x(2048).
+      
+       procedure division using parse-path, request-path.
+
+           set request-path-size to 
+               function length(function trim(request-path)).
+        
+           perform varying i from 1 by 1 
+           until i is greater request-path-size
+               if request-path(i:1) is equal "?" then
+                   exit perform
+               end-if
+           end-perform.
+
+           if i is greater request-path-size then
+               exit program
+           end-if
+
+           set ct to 1.
+           set j to 1.
+           set parse-get-size to 1.
+
+           add 1 to i.
+
+           perform varying i from i by 1
+           until i is greater request-path-size
+               evaluate ct
+                   when 1
+                       if request-path(i:1) is equal "=" then
+                           set ct to 2
+                           set j to 0
+                       else
+                           set get-name(parse-get-size)(j:1) 
+                               to request-path(i:1)
+                       end-if
+                   when 2
+                       if request-path(i:1) is equal "&" then
+                           set ct to 1
+                           set j to 0
+                           add 1 to parse-get-size
+                       else
+                           set get-value(parse-get-size)(j:1) 
+                               to request-path(i:1)
+                       end-if
+               end-evaluate
+
+               add 1 to j
+           end-perform.
+
+           exit program.
+      
+       end program parse-path.
