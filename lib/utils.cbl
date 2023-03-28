@@ -192,31 +192,72 @@
                exit program
            end-if
 
+           set request-path to request-path(i + 1:)
+
+           call "parse-urlencoded"
+           using by reference parse-path,
+           by content request-path.
+
+           exit program.
+      
+       end program parse-path.
+
+      ********************************
+
+       identification division.
+       program-id. parse-urlencoded.
+       
+       data division.
+
+       working-storage section.
+       77 i pic 9(4).
+       77 j pic 9(3).
+       77 ct pic 9.
+       77 string-size pic 9(4).
+
+       linkage section.
+       01 parse-urlencoded.
+           05 parse-data occurs 256 times.
+               10 parse-name     pic x(32).
+               10 parse-value    pic x(256).
+           05 parse-size pic 9(3).
+
+       77 request-string pic x(2048).
+       
+       procedure division using parse-urlencoded, request-string.
+
+           if request-string is equal spaces then
+               exit program
+           end-if.
+        
+           set string-size 
+               to function length(function trim(request-string)).
+
            set ct to 1.
            set j to 1.
-           set parse-get-size to 1.
+           set parse-size to 1.
 
            add 1 to i.
 
-           perform varying i from i by 1
-           until i is greater request-path-size
+           perform varying i from 1 by 1
+           until i is greater string-size
                evaluate ct
                    when 1
-                       if request-path(i:1) is equal "=" then
+                       if request-string(i:1) is equal "=" then
                            set ct to 2
                            set j to 0
                        else
-                           set get-name(parse-get-size)(j:1) 
-                               to request-path(i:1)
+                           set parse-name(parse-size)(j:1) 
+                               to request-string(i:1)
                        end-if
                    when 2
-                       if request-path(i:1) is equal "&" then
+                       if request-string(i:1) is equal "&" then
                            set ct to 1
                            set j to 0
-                           add 1 to parse-get-size
+                           add 1 to parse-size
                        else
-                           set get-value(parse-get-size)(j:1) 
-                               to request-path(i:1)
+                           set parse-value(parse-size)(j:1) 
+                               to request-string(i:1)
                        end-if
                end-evaluate
 
@@ -224,5 +265,5 @@
            end-perform.
 
            exit program.
-      
-       end program parse-path.
+       
+       end program parse-urlencoded.

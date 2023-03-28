@@ -19,6 +19,8 @@
            05 request-headers occurs 256 times.
                10 request-header       pic x(2048).
            05 request-headers-size  pic 9(3).
+           05 request-body pic x(2048).
+
        01 temp.
            05 temp-path    pic x(2048).
            05 temp-method  pic x(16).
@@ -119,25 +121,25 @@
                exit paragraph.
 
            parse-request.
-               set max-size-str to function length(buffer).
+               set max-size-str to function length(buffer-data).
                set start-str to 1.
                set k to 1.
 
                perform varying str-pointer from 1 by 1 
                until str-pointer is greater than max-size-str
 
-               if buffer(str-pointer:1) is equal space 
-               or buffer(str-pointer:1) is equal X"0A" then
+               if buffer-data(str-pointer:1) is equal space 
+               or buffer-data(str-pointer:1) is equal X"0A" then
                    evaluate k
                        when 1
                            set request-method 
-                           to buffer(start-str:str-pointer - start-str)
+                       to buffer-data(start-str:str-pointer - start-str)
                        when 2
                            set request-path 
-                           to buffer(start-str:str-pointer - start-str)
+                       to buffer-data(start-str:str-pointer - start-str)
                        when 3
                            set request-proto 
-                           to buffer(start-str:str-pointer - start-str)
+                       to buffer-data(start-str:str-pointer - start-str)
                    end-evaluate
                    compute start-str = str-pointer + 1
                    add 1 to k
@@ -152,20 +154,21 @@
                set request-headers-size to 0.
 
                perform varying str-pointer from start-str by 1 
-               until str-pointer is greater than max-size-str 
-                   if buffer(str-pointer:1) is equal X"0A" or 
+               until str-pointer is greater than max-size-str                    
+                   if buffer-data(str-pointer:1) is equal X"0A" or 
                    str-pointer is equal max-size-str then
+                       if buffer-data(str-pointer + 1:1) is equal X"0D"
+                           exit perform
+                       end-if
+
                        add 1 to request-headers-size
                        set request-headers(request-headers-size) 
-                       to buffer(start-str:str-pointer - start-str)
+                       to buffer-data(start-str:str-pointer - start-str)
                        compute start-str = str-pointer + 1
                    end-if
                end-perform.
 
-               set request-headers(request-headers-size) to spaces.
-               set request-headers(request-headers-size - 1) to spaces.
-
-               subtract 2 from request-headers-size.
+               set request-body to buffer-data(str-pointer + 3:).
 
                exit paragraph.
 
