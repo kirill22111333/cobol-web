@@ -1,6 +1,6 @@
 TARGET = server
 CC = gcc
-COBOL = cobol
+COBOL = cobc
 LN = ld -m i386pe
 CFLAGS = -std=c99 -m32 -lws2_32
 COBOL_FLAGS = -lws2_32
