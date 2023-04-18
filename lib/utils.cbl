@@ -91,49 +91,49 @@
 
            evaluate residue
                when 0
-                   set DY-NAME to "Sun"
+                   move "Sun" to DY-NAME
                when 1
-                   set DY-NAME to "Mon"
+                   move "Mon" to DY-NAME
                when 2
-                   set DY-NAME to "Tue"
+                   move "Tue" to DY-NAME
                when 3
-                   set DY-NAME to "Wed"
+                   move "Wed" to DY-NAME
                when 4
-                   set DY-NAME to "Thu"
+                   move "Thu" to DY-NAME
                when 5
-                   set DY-NAME to "Fri"
+                   move "Fri" to DY-NAME
                when 6
-                   set DY-NAME to "Sat"
+                   move "Sat" to DY-NAME
            end-evaluate.
 
            evaluate MONTH
                when 1
-                   set MONTH-NAME to "Jan"
+                   move "Jan" to MONTH-NAME
                when 2
-                   set MONTH-NAME to "Feb"
+                   move "Feb" to MONTH-NAME
                when 3
-                   set MONTH-NAME to "Mar"
+                   move "Mar" to MONTH-NAME
                when 4
-                   set MONTH-NAME to "Apr"
+                   move "Apr" to MONTH-NAME
                when 5
-                   set MONTH-NAME to "May"
+                   move "May" to MONTH-NAME
                when 6
-                   set MONTH-NAME to "Jun"
+                   move "Jun" to MONTH-NAME
                when 7
-                   set MONTH-NAME to "Jul"
+                   move "Jul" to MONTH-NAME
                when 8
-                   set MONTH-NAME to "Aug"
+                   move "Aug" to MONTH-NAME
                when 9
-                   set MONTH-NAME to "Sep"
+                   move "Sep" to MONTH-NAME
                when 10
-                   set MONTH-NAME to "Oct"
+                   move "Oct" to MONTH-NAME
                when 11
-                   set MONTH-NAME to "Nov"
+                   move "Nov" to MONTH-NAME
                when 12
-                   set MONTH-NAME to "Dec"
+                   move "Dec" to MONTH-NAME
            end-evaluate.
 
-           set result-string to spaces.
+           move spaces to result-string.
 
            string
                DY-NAME
@@ -190,9 +190,9 @@
 
            if i is greater request-path-size then
                exit program
-           end-if
+           end-if.
 
-           set request-path to request-path(i + 1:)
+           move request-path(i + 1:) to request-path.
 
            call "parse-urlencoded"
            using by reference parse-path,
@@ -247,8 +247,8 @@
                            set ct to 2
                            set j to 0
                        else
-                           set parse-name(parse-size)(j:1) 
-                               to request-string(i:1)
+                           move request-string(i:1)
+                               to parse-name(parse-size)(j:1)
                        end-if
                    when 2
                        if request-string(i:1) is equal "&" then
@@ -256,8 +256,8 @@
                            set j to 0
                            add 1 to parse-size
                        else
-                           set parse-value(parse-size)(j:1) 
-                               to request-string(i:1)
+                           move request-string(i:1)
+                               to parse-value(parse-size)(j:1)
                        end-if
                end-evaluate
 

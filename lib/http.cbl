@@ -98,7 +98,7 @@
 
            http-request.
                set buffer-size to 0.
-               set buffer-data to spaces.
+               move spaces to buffer-data.
 
                call "request_tcp"
                using by value connect,
@@ -131,15 +131,15 @@
                if buffer-data(str-pointer:1) is equal space 
                or buffer-data(str-pointer:1) is equal X"0A" then
                    evaluate k
-                       when 1
-                           set request-method 
-                       to buffer-data(start-str:str-pointer - start-str)
-                       when 2
-                           set request-path 
-                       to buffer-data(start-str:str-pointer - start-str)
-                       when 3
-                           set request-proto 
-                       to buffer-data(start-str:str-pointer - start-str)
+                   when 1
+                   move buffer-data(start-str:str-pointer - start-str) 
+                       to request-method
+                   when 2
+                   move buffer-data(start-str:str-pointer - start-str) 
+                       to request-path
+                   when 3
+                   move buffer-data(start-str:str-pointer - start-str) 
+                       to request-proto
                    end-evaluate
                    compute start-str = str-pointer + 1
                    add 1 to k
@@ -162,20 +162,21 @@
                        end-if
 
                        add 1 to request-headers-size
-                       set request-headers(request-headers-size) 
-                       to buffer-data(start-str:str-pointer - start-str)
+                       move 
+                       buffer-data(start-str:str-pointer - start-str) 
+                       to request-headers(request-headers-size)
                        compute start-str = str-pointer + 1
                    end-if
                end-perform.
 
-               set request-body to buffer-data(str-pointer + 3:).
+               move buffer-data(str-pointer + 3:) to request-body.
 
                exit paragraph.
 
            new-request.
-               set request-method to spaces.
-               set request-path to spaces.
-               set request-proto to spaces.
+               move spaces to request-method.
+               move spaces to request-path.
+               move spaces to request-proto.
 
                exit paragraph.
            
@@ -202,8 +203,8 @@
                    
                    end-if
 
-                   set temp-path to "##404"
-                   set temp-method to spaces
+                   move "##404" to temp-path
+                   move spaces to temp-method
 
                    call "get-func"
                    using by content http-tbl,
@@ -226,7 +227,7 @@
                exit paragraph.
 
            page404-http.
-               set buffer-data to spaces.
+               move spaces to buffer-data.
                set buffer-size to 1.
 
                string

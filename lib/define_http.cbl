@@ -12,7 +12,7 @@
       
        procedure division using http-tbl, http-address.
 
-           set http-host to http-address.
+           move http-address to http-host.
            set http-len to 1.
            set http-cap to 1000.
            

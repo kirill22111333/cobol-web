@@ -39,7 +39,7 @@
        procedure division using http-public, request-path, 
                            status-func, connect.
         
-           set buffer-data to spaces.
+           move spaces to buffer-data.
            set buffer-size to 1.
            
            string
@@ -48,7 +48,7 @@
                into buffer-data
            end-string.
       
-           set ws-fname to buffer-data.
+           move buffer-data to ws-fname.
 
            open input in-file.
 
@@ -67,9 +67,9 @@
       *    SEND HEADER
 
            set status-code to 200.
-           set status-text to "OK".
+           move "OK" to status-text.
 
-           set response-headers(1) to "Server: COBOL WEB".
+           move "Server: COBOL WEB" to response-headers(1).
            set response-headers-size to 1.
 
            call "sendheader_http"

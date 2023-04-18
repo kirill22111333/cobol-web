@@ -31,7 +31,7 @@
         
            add 1 to response-headers-size.
 
-           set response-headers(response-headers-size) to buffer-data.
+           move buffer-data to response-headers(response-headers-size).
         
            exit program.
        

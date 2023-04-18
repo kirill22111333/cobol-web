@@ -1,4 +1,4 @@
-#ifdef __LINUX__
+#ifdef __linux__
     #include <unistd.h>
     #include <arpa/inet.h>
 #elif __WIN32
@@ -38,7 +38,7 @@ extern int listen_tcp(char *address) {
 
     // If the socket is already defined.
     // SO_REUSEADDR used to redefine the socket.
-    #ifdef __LINUX__
+    #ifdef __linux__
         if (setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) < 0) {
             return SET_SOCKET_ERROR;
         }
@@ -119,7 +119,7 @@ extern int connect_tcp(char *address) {
 }
 
 extern int close_tcp(int connect) {
-    #ifdef __LINUX__
+    #ifdef __linux__
         return close(connect);
     #elif __WIN32
         return closesocket(connect);

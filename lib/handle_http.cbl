@@ -23,15 +23,15 @@
 
            evaluate func-type
                when "404"
-                   set tab-path(http-len) to "##404"
-                   set tab-method(http-len) to spaces
+                   move "##404" to tab-path(http-len)
+                   move spaces to tab-method(http-len)
                when other
                    if path-method is equal spaces then
-                       set path-method to "GET"
+                       move "GET" to path-method
                    end-if
 
-                   set tab-path(http-len) to path
-                   set tab-method(http-len) to path-method
+                   move path to tab-path(http-len)
+                   move path-method to tab-method(http-len)
            end-evaluate
         
            set func(http-len) to func-handle.
@@ -41,4 +41,3 @@
            exit program.
       
        end program handle_http.
-       

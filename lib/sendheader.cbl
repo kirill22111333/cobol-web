@@ -28,7 +28,7 @@
       *    STATUS LINE
 
            if http-version is equal spaces then
-               set http-version to "HTTP/1.1"
+               move "HTTP/1.1" to http-version
            end-if.
 
            if status-code is equal 0 then
@@ -36,13 +36,13 @@
            end-if.
         
            if status-text is equal spaces then
-               set status-text to "OK"
+               move "OK" to status-text
            end-if.
            
            set is-send-content-type to 0.
            set is-end to 0.
 
-           set buffer-data to spaces.
+           move spaces to buffer-data.
            set buffer-size to 1.
            
            string 
@@ -65,11 +65,11 @@
 
       *    SEND HEADERS
 
-           set buffer-data to spaces.
+           move spaces to buffer-data.
            set buffer-size to 1.
 
            if response-headers-size is equal 0 then
-               set response-headers(1) to "Content-type: text/html"
+               move "Content-type: text/html" to response-headers(1)
            end-if.
 
            string 
@@ -80,8 +80,8 @@
            perform varying i from 2 by 1 
            until i is greater than response-headers-size
 
-               set tmp-buffer to buffer-data
-               set buffer-data to spaces
+               move buffer-data to tmp-buffer
+               move spaces to buffer-data
                
                string 
                    function trim(tmp-buffer) delimited by size
@@ -92,8 +92,8 @@
       
            end-perform.
 
-           set tmp-buffer to buffer-data.
-           set buffer-data to spaces.
+           move buffer-data to tmp-buffer.
+           move spaces to buffer-data.
            set buffer-size to 1.
 
            string 

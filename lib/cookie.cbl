@@ -42,7 +42,7 @@
            end-if.
 
            if cookie-path is equal spaces
-               set cookie-path to "/"
+               move "/" to cookie-path
            end-if.
 
            if cookie-expires is equal "SESSION" then
@@ -73,7 +73,7 @@
                end-string
            end-if.
 
-           set header-title to "Set-Cookie".
+           move "Set-Cookie" to header-title.
 
            call "setheader"
            using by reference response-data,
@@ -142,8 +142,8 @@
                        add 1 to j
                        add 1 to cookie-size
                    else
-                       set cookie-value(cookie-size)(k:1) to 
-                           request-header(i)(j:1)
+                       move request-header(i)(j:1) to 
+                           cookie-value(cookie-size)(k:1)
                    end-if
                end-if
 
@@ -152,8 +152,8 @@
                        set ct to 2
                        set k to 0
                    else
-                       set cookie-name(cookie-size)(k:1) to 
-                           request-header(i)(j:1)
+                       move request-header(i)(j:1) to 
+                           cookie-name(cookie-size)(k:1)
                    end-if
                end-if
 

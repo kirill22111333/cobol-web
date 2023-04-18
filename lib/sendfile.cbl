@@ -10,7 +10,7 @@
        data division.
 
        file section.
-       fd in-file record is varying depending ws-flen.
+       fd in-file record is varying from 1 to 512 depending ws-flen.
        01 file-data pic x(512).
 
        working-storage section.
@@ -26,13 +26,13 @@
 
        procedure division using connect, filename.
 
-           set ws-eof to space.
-           set ws-fname to filename.
+           move space to ws-eof.
+           move filename to ws-fname.
         
            open input in-file.
 
            perform until ws-eof is equal 'Y'
-               set file-data to spaces
+               move spaces to file-data
                
                read in-file
                at end move 'Y' to ws-eof

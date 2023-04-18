@@ -50,7 +50,7 @@
                exit program
            end-if.
       
-           set ws-fname to file-path.
+           move file-path to ws-fname.
 
            open input in-file.
 
@@ -67,7 +67,7 @@
       *    SEND HEADER
 
            set status-code to 200.
-           set status-text to "OK".
+           move "OK" to status-text.
 
            if file-name is equal spaces then
                set file-size 
@@ -85,10 +85,10 @@
                    end-if
                end-perform
 
-               set file-name to file-path(k:j)
+               move file-path(k:j) to file-name
            end-if. 
 
-           set response-headers(1) to spaces.
+           move spaces to response-headers(1).
 
            string 
                "Content-Disposition: attachment; filename="
