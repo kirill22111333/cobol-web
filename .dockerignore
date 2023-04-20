@@ -1,0 +1,7 @@
+# ignore all build object files
+obj/
+
+# ignore all build example files
+examples/**/*.exe
+
+.vscode
