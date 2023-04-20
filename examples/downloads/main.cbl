@@ -25,13 +25,13 @@
        
        procedure division.
 
-           set host-address to "127.0.0.1:8000".
+           move "127.0.0.1:8000" to host-address.
         
            call "define_http" 
            using by reference http-tbl, 
                  by content host-address.
 
-           set host-path to "/".
+           move "/" to host-path.
            set host-handle to entry "http-index".
 
            call "handle_http"
@@ -41,7 +41,7 @@
                  by content host-handle,
                  by content handle-func-type.
 
-           set host-path to "/download".
+           move "/download" to host-path.
            set host-handle to entry "http-download".
 
            call "handle_http"
@@ -91,7 +91,7 @@
        
        procedure division using request, connect.
 
-           set file-name to "./layouts/index.html".
+           move "./layouts/index.html" to file-name.
 
            call "sendhtml_http"
            using by content response-data,
@@ -155,7 +155,7 @@
            using by reference parse-path
            by content request-path.
 
-           set file-path to spaces.
+           move spaces to file-path.
 
            perform varying i from 1 by 1 
            until i is greater parse-get-size
@@ -183,9 +183,9 @@
            end-if.
 
            set status-code to 404.
-           set status-text to "Not Found".
+           move "Not Found" to status-text.
 
-           set string-data to "File not found".
+           move "File not found" to string-data.
            set string-size to 
                function length(function trim(string-data)).
 

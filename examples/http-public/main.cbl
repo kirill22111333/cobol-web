@@ -25,15 +25,15 @@
        
        procedure division.
 
-           set host-address to "127.0.0.1:8000".
+           move "127.0.0.1:8000" to host-address.
         
            call "define_http" 
            using by reference http-tbl, 
                  by content host-address.
 
-           set http-public to "./public".
+           move "./public" to http-public.
 
-           set host-path to "/".
+           move "/" to host-path.
            set host-handle to entry "http-index".
 
            call "handle_http"
@@ -87,7 +87,7 @@
        
        procedure division using request, connect.
 
-           set file-name to "./layouts/index.html".
+           move "./layouts/index.html" to file-name.
 
            call "sendhtml_http"
            using by content response-data,

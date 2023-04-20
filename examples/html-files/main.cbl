@@ -25,13 +25,13 @@
        
        procedure division.
 
-           set host-address to "127.0.0.1:8000".
+           move "127.0.0.1:8000" to host-address.
         
            call "define_http" 
            using by reference http-tbl, 
                  by content host-address.
 
-           set host-path to "/".
+           move "/" to host-path.
            set host-handle to entry "http-index".
 
            call "handle_http"
@@ -41,7 +41,7 @@
                  by content host-handle,
                  by content handle-func-type.
 
-           set host-path to "/about".
+           move "/about" to host-path.
            set host-handle to entry "http-about".
 
            call "handle_http"
@@ -109,7 +109,7 @@
              display i ". " function trim(request-header(i))
            end-perform.
 
-           set file-name to "./layouts/index.html".
+           move "./layouts/index.html" to file-name.
 
            call "sendhtml_http"
            using by content response-data,
@@ -171,7 +171,7 @@
              display i ". " function trim(request-header(i))
            end-perform.
 
-           set file-name to "./layouts/about.html".
+           move "./layouts/about.html" to file-name.
 
            call "sendhtml_http"
            using by content response-data,

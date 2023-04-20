@@ -25,13 +25,13 @@
        
        procedure division.
 
-           set host-address to "127.0.0.1:8000".
+           move "127.0.0.1:8000" to host-address.
         
            call "define_http" 
            using by reference http-tbl, 
                  by content host-address.
 
-           set handle-func-type to "404".
+           move "404" to handle-func-type.
            set host-handle to entry "http-404".
 
            call "handle_http"
@@ -41,7 +41,7 @@
                  by content host-handle,
                  by content handle-func-type.
 
-           set handle-func-type to spaces.
+           move spaces to handle-func-type.
 
            call "listen_http" 
            using by reference http-tbl.
@@ -85,10 +85,10 @@
 
            display "404-page".
         
-           set file-name to "./layouts/404.html".
+           move "./layouts/404.html" to file-name.
 
            set status-code to 404.
-           set status-text to "Not Found".
+           move "Not Found" to status-text.
 
            call "sendhtml_http"
            using by content response-data,
@@ -98,4 +98,3 @@
            exit program.
        
        end program http-404.
-       

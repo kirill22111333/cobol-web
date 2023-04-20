@@ -26,7 +26,7 @@
                stop run.
 
            connect-server.
-               set server-address to "127.0.0.1:8000".
+               move "127.0.0.1:8000" to server-address.
 
                call "connect_tcp" using by content server-address
                    returning connect.
@@ -39,7 +39,7 @@
                exit paragraph.
 
            working-client.
-               set buffer to spaces.
+               move spaces to buffer.
                set buffer-size to 1.
 
                string
@@ -52,7 +52,7 @@
                    by content function trim(buffer),
                    by value buffer-size.
 
-               set buffer to spaces.
+               move spaces to buffer.
 
                call "request_tcp" using by value connect,
                    by reference buffer, by value buffer-size-st
@@ -69,7 +69,7 @@
            send-data.
                accept input-value from console.
 
-               set buffer to spaces.
+               move spaces to buffer.
                set buffer-size to 1.
                
                string
@@ -87,7 +87,7 @@
                    exit paragraph
                end-if.
 
-               set buffer to spaces.
+               move spaces to buffer.
 
                call "request_tcp" using by value connect,
                    by reference buffer, by value buffer-size-st
@@ -104,4 +104,3 @@
                exit paragraph.
       
        end program tcp-client.
-      

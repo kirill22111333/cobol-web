@@ -25,16 +25,16 @@
        
        procedure division.
 
-           set host-address to "127.0.0.1:8000".
+           move "127.0.0.1:8000" to host-address.
         
            call "define_http" 
            using by reference http-tbl, 
                  by content host-address.
 
-           set host-path to "/".
+           move "/" to host-path.
            set host-handle to entry "http-index".
 
-           set path-method to "GET".
+           move "GET" to path-method.
 
            call "handle_http"
            using by reference http-tbl,
@@ -43,7 +43,7 @@
                  by content host-handle,
                  by content handle-func-type.
 
-           set path-method to "POST".
+           move "POST" to path-method.
 
            call "handle_http"
            using by reference http-tbl,
@@ -110,7 +110,7 @@
 
            initialize parse-urlencoded.
 
-           set string-data to spaces.
+           move spaces to string-data.
 
            call "parse-urlencoded"
            using by reference parse-urlencoded,
@@ -126,10 +126,10 @@
                '</form>'
                "POST DATA: <ul>" 
                into string-data
-           end-string
+           end-string.
 
            perform varying i from 1 by 1 until i is greater parse-size
-               set temp-string to string-data
+               move string-data to temp-string
                string
                    function trim(temp-string)
                    "<li>"
@@ -139,17 +139,17 @@
                    "</li>"
                    into string-data
                end-string
-           end-perform
+           end-perform.
 
-           set temp-string to string-data
-           set string-size to 1
+           move string-data to temp-string.
+           set string-size to 1.
 
            string
                function trim(temp-string)
                "</ul>" 
                into string-data
                with pointer string-size
-           end-string
+           end-string.
       
            call "sendtext_http"
            using by content response-data,

@@ -25,13 +25,13 @@
        
        procedure division.
 
-           set host-address to "127.0.0.1:8000".
+           move "127.0.0.1:8000" to host-address.
         
            call "define_http" 
            using by reference http-tbl, 
                  by content host-address.
 
-           set host-path to "/".
+           move "/" to host-path.
            set host-handle to entry "http-index".
 
            call "handle_http"
@@ -117,25 +117,25 @@
                display "---------------------"
            end-perform.
 
-           set cookie-name to "FirstCookie".
-           set cookie-value to "cookie#1".
-           set cookie-path to "/".
+           move "FirstCookie" to cookie-name.
+           move "cookie#1" to cookie-value.
+           move "/" to cookie-path.
            set cookie-days to 10.
 
            call "setCookie"
            using by reference response-data
            by content cookie.
 
-           set cookie-name to "SecondCookie".
-           set cookie-value to "cookie#2".
-           set cookie-path to "/".
+           move "SecondCookie" to cookie-name.
+           move "cookie#2" to cookie-value.
+           move "/" to cookie-path.
            set cookie-days to 10.
 
            call "setCookie"
            using by reference response-data
            by content cookie.
 
-           set string-data to "Test Cookies".
+           move "Test Cookies" to string-data.
            set string-size to 
                function length(function trim(string-data)).
       

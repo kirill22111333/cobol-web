@@ -25,13 +25,13 @@
        
        procedure division.
 
-           set host-address to "127.0.0.1:8000".
+           move "127.0.0.1:8000" to host-address.
         
            call "define_http" 
            using by reference http-tbl, 
                  by content host-address.
 
-           set host-path to "/".
+           move "/" to host-path.
            set host-handle to entry "http-index".
 
            call "handle_http"
@@ -99,7 +99,7 @@
 
            initialize parse-path.
 
-           set string-data to spaces.
+           move spaces to string-data.
 
            call "parse-path"
            using by reference parse-path
@@ -112,7 +112,7 @@
            end-string
 
            perform varying i from 1 by 1 until i is greater parse-size
-               set temp-string to string-data
+               move string-data to temp-string
                string
                    function trim(temp-string)
                    "<li>"
@@ -124,7 +124,7 @@
                end-string
            end-perform
 
-           set temp-string to string-data
+           move string-data to temp-string
            set string-size to 1
 
            string

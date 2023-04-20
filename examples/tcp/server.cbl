@@ -30,7 +30,7 @@
                stop run.
 
            run-listener.
-               set server-address to "0.0.0.0:8000".
+               move "0.0.0.0:8000" to server-address.
 
                call "listen_tcp" using by content server-address 
                    returning listener.
@@ -53,7 +53,7 @@
                    stop run
                end-if.
 
-               set buffer to spaces.
+               move spaces to buffer.
                set buffer-size to 1.
 
                string 
@@ -75,7 +75,7 @@
                exit paragraph.
 
            process-request.
-               set buffer to spaces.
+               move spaces to buffer.
 
                call "request_tcp" using by value connect, 
                    by reference buffer, by value buffer-size-st 
@@ -92,7 +92,7 @@
                    if buffer(1:request-length) is equal exit-message
                        perform send-exit-message
                    else
-                       set buffer to spaces
+                       move spaces to buffer
                        set buffer-size to 1
 
                        string 
@@ -116,7 +116,7 @@
                exit paragraph.
 
            send-exit-message.
-               set buffer to spaces.
+               move spaces to buffer.
                set buffer-size to 1.
 
                string 
@@ -134,4 +134,3 @@
                exit paragraph.
       
        end program tcp-server.
-      

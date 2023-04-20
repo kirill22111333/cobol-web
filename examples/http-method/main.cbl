@@ -25,16 +25,16 @@
        
        procedure division.
 
-           set host-address to "127.0.0.1:8000".
+           move "127.0.0.1:8000" to host-address.
         
            call "define_http" 
            using by reference http-tbl, 
                  by content host-address.
 
-           set host-path to "/".
+           move "/" to host-path.
            set host-handle to entry "http-index".
 
-           set path-method to "GET".
+           move "GET" to path-method.
 
            call "handle_http"
            using by reference http-tbl,
@@ -43,7 +43,7 @@
                  by content host-handle,
                  by content handle-func-type.
 
-           set path-method to "POST".
+           move "POST" to path-method.
 
            call "handle_http"
            using by reference http-tbl,
@@ -52,7 +52,7 @@
                  by content host-handle,
                  by content handle-func-type.
 
-           set path-method to "PUT".
+           move "PUT" to path-method.
 
            call "handle_http"
            using by reference http-tbl,
@@ -61,7 +61,7 @@
                  by content host-handle,
                  by content handle-func-type.
 
-           set path-method to "DELETE".
+           move "DELETE" to path-method.
 
            call "handle_http"
            using by reference http-tbl,
@@ -116,7 +116,7 @@
        
        procedure division using request, connect.
 
-           set string-data to spaces.
+           move spaces to string-data.
            set string-size to 1.
 
            string

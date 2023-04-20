@@ -25,13 +25,13 @@
        
        procedure division.
 
-           set host-address to "127.0.0.1:8000".
+           move "127.0.0.1:8000" to host-address.
         
            call "define_http" 
            using by reference http-tbl, 
                  by content host-address.
 
-           set host-path to "/".
+           move "/" to host-path.
            set host-handle to entry "http-index".
 
            call "handle_http"
@@ -87,17 +87,17 @@
        
        procedure division using request, connect.
 
-           set string-data to "header customization".
-           set string-size to 
-               function length(function trim(string-data)).
+           move "header customization" to string-data.
+           move function length(function trim(string-data)) 
+             to string-size.
 
-           set http-version to "HTTP/1.1".
+           move "HTTP/1.1" to http-version.
            set status-code to 200.
-           set status-text to "OK".
+           move "OK" to status-text.
 
-           set response-headers(1) to "Content-type: text/html".
-           set response-headers(2) to "Server: WEB COBOL".
-           set response-headers(3) to "Content-language: en".
+           move "Content-type: text/html" to response-headers(1).
+           move "Server: WEB COBOL" to response-headers(2).
+           move "Content-language: en" to response-headers(3).
 
            set response-headers-size to 3.
       
