@@ -10,7 +10,7 @@
        data division.
 
        file section.
-       fd in-file record is varying from 1 to 512 depending ws-flen.
+       fd in-file record is varying 512 depending on ws-flen.
        01 file-data pic x(512).
 
        working-storage section.
